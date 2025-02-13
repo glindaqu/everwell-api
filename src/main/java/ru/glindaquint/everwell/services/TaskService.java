@@ -2,8 +2,11 @@ package ru.glindaquint.everwell.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.glindaquint.everwell.dto.tasks.GetTasksByUserResponse;
+import ru.glindaquint.everwell.models.Task;
 import ru.glindaquint.everwell.repo.TaskRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -11,7 +14,11 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    public GetTasksByUserResponse getTasksByUserId(Long userId) {
-        return new GetTasksByUserResponse(taskRepository.findAllByOwnerId(userId));
+    public List<Task> getTasksByUserId(Long userId) {
+        return taskRepository.findAllByOwnerId(userId);
+    }
+
+    public Optional<Task> getTaskById(Long taskId) {
+        return taskRepository.findByTaskId(taskId);
     }
 }

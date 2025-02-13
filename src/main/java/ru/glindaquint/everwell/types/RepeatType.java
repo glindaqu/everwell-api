@@ -9,5 +9,5 @@ public enum RepeatType {
     ONCE_PER_3_DAYS,
     EVERY_WEEK,
     EVERY_MONTH,
-    NO_NOTIFICATION
+    NO_REPEAT
 }
