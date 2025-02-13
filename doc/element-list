@@ -1,0 +1,11 @@
+ru.glindaquint.everwell
+ru.glindaquint.everwell.configuration
+ru.glindaquint.everwell.controllers
+ru.glindaquint.everwell.dto.auth
+ru.glindaquint.everwell.dto.tasks
+ru.glindaquint.everwell.exceptions.auth
+ru.glindaquint.everwell.filters
+ru.glindaquint.everwell.models
+ru.glindaquint.everwell.repo
+ru.glindaquint.everwell.services
+ru.glindaquint.everwell.types
