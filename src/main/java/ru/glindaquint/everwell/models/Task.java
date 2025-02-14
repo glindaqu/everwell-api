@@ -2,7 +2,7 @@ package ru.glindaquint.everwell.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.glindaquint.everwell.types.RepeatType;
+import ru.glindaquint.everwell.types.Repeat;
 
 import java.util.Date;
 
@@ -35,13 +35,20 @@ public class Task {
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
 
-    @Column(name = "repeat_type", nullable = false)
+    @Column(name = "repeat", nullable = false)
     @Enumerated(EnumType.STRING)
-    private RepeatType repeatType;
+    private Repeat repeat;
 
     @Column(name = "is_notification_enabled", nullable = false)
     private Boolean isNotificationEnabled;
 
     @Column(name = "deadline_date", nullable = false)
     private Date deadlineDate;
+
+    @PrePersist
+    private void beforeInsert() {
+        Date date = new Date();
+        this.creationDate = date;
+        this.lastChangeDate = date;
+    }
 }

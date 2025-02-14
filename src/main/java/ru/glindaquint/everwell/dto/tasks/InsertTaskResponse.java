@@ -9,9 +9,9 @@ import ru.glindaquint.everwell.models.Task;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema
-public class GetTaskByIdResponse {
+public class InsertTaskResponse {
     private Task task;
 }

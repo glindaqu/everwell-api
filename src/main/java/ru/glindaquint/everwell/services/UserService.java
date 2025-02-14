@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.glindaquint.everwell.exceptions.auth.BadEmailException;
 import ru.glindaquint.everwell.exceptions.auth.BadPasswordException;
 import ru.glindaquint.everwell.exceptions.auth.BadUsernameException;
@@ -19,6 +20,7 @@ public class UserService {
     /**
      * Создание пользователя
      */
+    @Transactional
     public void create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
             throw new BadUsernameException();
@@ -40,6 +42,7 @@ public class UserService {
      *
      * @return пользователь
      */
+    @Transactional(readOnly = true)
     public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));

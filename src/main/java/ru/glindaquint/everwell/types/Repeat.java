@@ -1,0 +1,13 @@
+package ru.glindaquint.everwell.types;
+
+public enum Repeat {
+    REPEAT_EVERY_HOUR,
+    REPEAT_EVERY_6_HOURS,
+    REPEAT_EVERY_12_HOURS,
+    REPEAT_EVERY_DAY,
+    REPEAT_ONCE_PER_2_DAYS,
+    REPEAT_ONCE_PER_3_DAYS,
+    REPEAT_EVERY_WEEK,
+    REPEAT_EVERY_MONTH,
+    REPEAT_NO_REPEAT
+}
