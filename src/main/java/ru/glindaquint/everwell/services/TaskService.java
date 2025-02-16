@@ -26,7 +26,12 @@ public class TaskService {
     }
 
     @Transactional
-    public Task create(Task task) {
+    public Task save(Task task) {
         return taskRepository.save(task);
+    }
+
+    @Transactional
+    public void delete(Task task) {
+        taskRepository.delete(task);
     }
 }

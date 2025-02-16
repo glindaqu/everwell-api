@@ -45,10 +45,15 @@ public class Task {
     @Column(name = "deadline_date", nullable = false)
     private Date deadlineDate;
 
+    @Column(name = "is_completed", nullable = false)
+    private Boolean isCompleted;
+
     @PrePersist
     private void beforeInsert() {
         Date date = new Date();
         this.creationDate = date;
         this.lastChangeDate = date;
+
+        this.isCompleted = false;
     }
 }

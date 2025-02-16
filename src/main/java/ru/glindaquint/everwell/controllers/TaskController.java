@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.glindaquint.everwell.dto.tasks.DeleteTaskRequest;
 import ru.glindaquint.everwell.dto.tasks.GetTasksByUserResponse;
 import ru.glindaquint.everwell.dto.tasks.InsertTaskRequest;
 import ru.glindaquint.everwell.dto.tasks.InsertTaskResponse;
@@ -14,6 +15,7 @@ import ru.glindaquint.everwell.models.Task;
 import ru.glindaquint.everwell.services.TaskService;
 import ru.glindaquint.everwell.services.UserService;
 
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -57,12 +59,55 @@ public class TaskController {
                 .deadlineDate(request.getDeadlineDate())
                 .build();
         try {
-            Task createdTask = taskService.create(task);
+            Task createdTask = taskService.save(task);
             return ResponseEntity.ok(new InsertTaskResponse(createdTask));
         } catch (Exception ignored) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error when creating task");
+        }
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteTask(@RequestBody @Valid DeleteTaskRequest request) {
+        Task task = Task.builder()
+                .ownerId(userService.getCurrentUser().getUserId())
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .repeat(request.getRepeat())
+                .isNotificationEnabled(request.getIsNotificationEnabled())
+                .deadlineDate(request.getDeadlineDate())
+                .build();
+        try {
+            taskService.delete(task);
+            return ResponseEntity.ok("Task deleted");
+        } catch (Exception ignored) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error when deleting task");
+        }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateTask(@RequestBody @Valid DeleteTaskRequest request) {
+        Task task = Task.builder()
+                .taskId(request.getTaskId())
+                .ownerId(userService.getCurrentUser().getUserId())
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .repeat(request.getRepeat())
+                .isNotificationEnabled(request.getIsNotificationEnabled())
+                .deadlineDate(request.getDeadlineDate())
+                .creationDate(request.getCreationDate())
+                .lastChangeDate(new Date())
+                .build();
+        try {
+            taskService.save(task);
+            return ResponseEntity.ok("Task saved");
+        } catch (Exception ignored) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error when saving task");
         }
     }
 }
