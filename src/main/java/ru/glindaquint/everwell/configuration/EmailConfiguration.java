@@ -20,13 +20,10 @@ class EmailConfiguration {
     private String password;
 
     @Value("${spring.mail.port}")
-    private Integer port;
+    private int port;
 
     @Value("${spring.mail.protocol}")
     private String protocol;
-
-    @Value("${mail.debug}")
-    private String debug;
 
     @Bean
     public JavaMailSender getMailSender() {
@@ -37,7 +34,6 @@ class EmailConfiguration {
         mailSender.setPassword(password);
         var properties = mailSender.getJavaMailProperties();
         properties.setProperty("mail.transport.protocol", protocol);
-        properties.setProperty("mail.debug", debug);
         return mailSender;
     }
 
