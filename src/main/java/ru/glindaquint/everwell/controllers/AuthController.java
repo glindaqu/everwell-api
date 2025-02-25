@@ -15,6 +15,7 @@ import ru.glindaquint.everwell.dto.auth.JwtAuthenticationResponse;
 import ru.glindaquint.everwell.dto.auth.SignInRequest;
 import ru.glindaquint.everwell.dto.auth.SignUpRequest;
 import ru.glindaquint.everwell.services.AuthenticationService;
+import ru.glindaquint.everwell.services.UserService;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,12 +23,15 @@ import ru.glindaquint.everwell.services.AuthenticationService;
 @Tag(name = "Аутентификация")
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
         try {
-            return ResponseEntity.ok(new JwtAuthenticationResponse(authenticationService.signUp(request)));
+            return ResponseEntity.ok(new JwtAuthenticationResponse(
+                    authenticationService.signUp(request)
+            ));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -37,7 +41,15 @@ public class AuthController {
 
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/sign-in")
-    public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
-        return authenticationService.signIn(request);
+    public ResponseEntity<?> signIn(@RequestBody @Valid SignInRequest request) {
+        try {
+            return ResponseEntity.ok(new JwtAuthenticationResponse(
+                    authenticationService.signIn(request)
+            ));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
     }
 }

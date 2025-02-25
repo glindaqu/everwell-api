@@ -45,7 +45,7 @@ public class AuthenticationService {
      * @param request данные пользователя
      * @return токен
      */
-    public JwtAuthenticationResponse signIn(SignInRequest request) {
+    public String signIn(SignInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()
@@ -55,7 +55,6 @@ public class AuthenticationService {
                 .userDetailsService()
                 .loadUserByUsername(request.getUsername());
 
-        var jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(jwt);
+        return jwtService.generateToken(user);
     }
 }
