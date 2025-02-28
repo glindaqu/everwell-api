@@ -12,6 +12,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Доменная модель пользователя, реализует UserDetails.
+ *
+ * @see UserDetails
+ */
 @Entity
 @Builder
 @Getter

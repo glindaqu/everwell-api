@@ -3,6 +3,7 @@ package ru.glindaquint.everwell.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.glindaquint.everwell.dto.auth.JwtAuthenticationResponse;
@@ -11,6 +12,14 @@ import ru.glindaquint.everwell.dto.auth.SignUpRequest;
 import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.types.Role;
 
+/**
+ * Сервис для манипуляции данными авторизации пользователя
+ *
+ * @see UserService
+ * @see JwtService
+ * @see PasswordEncoder
+ * @see AuthenticationService
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -20,13 +29,14 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     /**
-     * Регистрация пользователя
+     * Регистрация пользователя на основе переданного объекта SignUpRequest
      *
      * @param request данные пользователя
-     * @return токен
+     * @return Jwt токен для последующей аутентификации запросов
+     * @see SignUpRequest
+     * @see JwtService
      */
     public String signUp(SignUpRequest request) {
-
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
@@ -40,12 +50,15 @@ public class AuthenticationService {
     }
 
     /**
-     * Аутентификация пользователя
+     * Аутентификация пользователя на основе переданного объекта SignInRequest
      *
      * @param request данные пользователя
-     * @return токен
+     * @return Jwt токен для последующей аутентификации запросов
+     * @see SignInRequest
+     * @see JwtService
+     * @throws org.springframework.security.core.AuthenticationException Если пользователь не найден
      */
-    public String signIn(SignInRequest request) {
+    public String signIn(SignInRequest request) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()

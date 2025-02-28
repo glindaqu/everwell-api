@@ -16,16 +16,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Сервис для манипуляции Jwt токенами
+ *
+ * @see Jwts
+ */
 @Service
 public class JwtService {
+    // Получения ключа для шифрования подписи токена из контекста
     @Value("${everwell_api.app.secret}")
     private String jwtSigningKey;
+
+    @Value("${everwell_api.app.token-lifetime}")
+    private Long jwtTokenLifetime;
 
     /**
      * Извлечение имени пользователя из токена
      *
-     * @param token токен
-     * @return имя пользователя
+     * @param token Токен
+     * @return Имя пользователя
      */
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -34,8 +43,9 @@ public class JwtService {
     /**
      * Генерация токена
      *
-     * @param userDetails данные пользователя
-     * @return токен
+     * @param userDetails Данные пользователя
+     * @return Токен
+     * @see UserDetails
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -50,9 +60,10 @@ public class JwtService {
     /**
      * Проверка токена на валидность
      *
-     * @param token       токен
-     * @param userDetails данные пользователя
-     * @return true, если токен валиден
+     * @param token Токен
+     * @param userDetails Данные пользователя
+     * @return true, если токен валиден, иначе - false
+     * @see UserDetails
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
@@ -62,10 +73,11 @@ public class JwtService {
     /**
      * Извлечение данных из токена
      *
-     * @param token           токен
-     * @param claimsResolvers функция извлечения данных
-     * @param <T>             тип данных
-     * @return данные
+     * @param token Токен
+     * @param claimsResolvers Функция извлечения данных
+     * @param <T> Тип данных
+     * @return Данные
+     * @see Function
      */
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
@@ -78,16 +90,19 @@ public class JwtService {
      * @param extraClaims дополнительные данные
      * @param userDetails данные пользователя
      * @return токен
+     * @see UserDetails
      */
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
     /**
-     * Проверка токена на просроченность
+     * Проверка токена на действительность
      *
      * @param token токен
      * @return true, если токен просрочен
@@ -113,7 +128,10 @@ public class JwtService {
      * @return данные
      */
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+        return Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
                 .getBody();
     }
 
