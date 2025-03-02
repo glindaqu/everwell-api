@@ -43,11 +43,11 @@ public class EmailController {
             @RequestParam String body
     ) {
         Bucket bucket = resolveBucket(request.getRemoteAddr());
-//        if (bucket.tryConsume(1)) {
+        if (bucket.tryConsume(1)) {
             emailService.send(to, subject, body);
             return ResponseEntity.ok("Sent");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Request limit reached");
-//        }
+        } else {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Request limit reached");
+        }
     }
 }

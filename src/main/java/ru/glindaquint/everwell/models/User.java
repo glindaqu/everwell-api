@@ -6,8 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.glindaquint.everwell.types.Role;
+import ru.glindaquint.everwell.types.Sex;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -36,6 +38,22 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "birth_date", nullable = false)
+    private Date birthDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sex", nullable = false)
+    private Sex sex;
+
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
+
+    @Column(name = "patronymic")
+    private String patronymic;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
