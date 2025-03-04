@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.glindaquint.everwell.dto.auth.JwtAuthenticationResponse;
+import ru.glindaquint.everwell.dto.auth.RestoreRequest;
 import ru.glindaquint.everwell.dto.auth.SignInRequest;
 import ru.glindaquint.everwell.dto.auth.SignUpRequest;
 import ru.glindaquint.everwell.services.AuthenticationService;
@@ -23,7 +24,6 @@ import ru.glindaquint.everwell.services.UserService;
 @Tag(name = "Аутентификация")
 public class AuthController {
     private final AuthenticationService authenticationService;
-    private final UserService userService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
@@ -51,5 +51,10 @@ public class AuthController {
                     .status(HttpStatus.CONFLICT)
                     .body(e.getMessage());
         }
+    }
+
+    @PostMapping("/restore-password")
+    public ResponseEntity<?> restorePassword(@RequestBody @Valid RestoreRequest request) {
+        return ResponseEntity.ok(authenticationService.restorePassword(request));
     }
 }

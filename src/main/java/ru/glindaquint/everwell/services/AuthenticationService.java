@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.glindaquint.everwell.dto.auth.JwtAuthenticationResponse;
+import ru.glindaquint.everwell.dto.auth.RestoreRequest;
 import ru.glindaquint.everwell.dto.auth.SignInRequest;
 import ru.glindaquint.everwell.dto.auth.SignUpRequest;
 import ru.glindaquint.everwell.models.User;
@@ -69,5 +70,9 @@ public class AuthenticationService {
                 .loadUserByUsername(request.getUsername());
 
         return jwtService.generateToken(user);
+    }
+
+    public boolean restorePassword(RestoreRequest request) {
+        return userService.restorePassword(request.getEmail(), passwordEncoder.encode(request.getPassword()));
     }
 }

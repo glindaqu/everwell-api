@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.glindaquint.everwell.dto.auth.RestoreRequest;
 import ru.glindaquint.everwell.exceptions.auth.BadEmailException;
 import ru.glindaquint.everwell.exceptions.auth.BadPasswordException;
 import ru.glindaquint.everwell.exceptions.auth.BadUsernameException;
@@ -77,5 +79,15 @@ public class UserService {
         // Получение имени пользователя из контекста Spring Security
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
+    }
+
+    public boolean restorePassword(String email, String password) {
+        var user = repository.findByEmail(email);
+        if (user.isEmpty()) {
+            return false;
+        }
+        user.get().setPassword(password);
+
+        return true;
     }
 }
