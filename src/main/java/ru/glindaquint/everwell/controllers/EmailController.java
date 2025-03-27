@@ -32,7 +32,9 @@ public class EmailController {
 
     private Bucket createNewBucket(String key) {
         return Bucket.builder()
-                .addLimit(limit -> limit.capacity(1).refillGreedy(1, Duration.ofMinutes(3)))
+                .addLimit(limit ->
+                        limit.capacity(1).refillGreedy(1, Duration.ofMinutes(3))
+                )
                 .build();
     }
 
