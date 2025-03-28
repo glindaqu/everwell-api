@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.glindaquint.everwell.models.Task;
+import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.repo.TaskRepository;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     @Transactional(readOnly = true)
-    public List<Task> getTasksByUserId(Long userId) {
-        return taskRepository.findAllByOwnerId(userId);
+    public List<Task> getTasksByUser(User user) {
+        return taskRepository.findAllByUser(user);
     }
 
     @Transactional(readOnly = true)

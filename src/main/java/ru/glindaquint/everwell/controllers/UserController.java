@@ -25,6 +25,10 @@ public class UserController {
         return ResponseEntity.ok(GetUserResponse.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .patronymic(user.getPatronymic())
+                .sex(String.valueOf(user.getSex()))
                 .build()
         );
     }

@@ -32,9 +32,6 @@ public class Task {
     @Column(name = "last_change_date", nullable = false)
     private Date lastChangeDate;
 
-    @Column(name = "owner_id", nullable = false)
-    private Long ownerId;
-
     @Column(name = "repeat", nullable = false)
     @Enumerated(EnumType.STRING)
     private Repeat repeat;
@@ -47,6 +44,11 @@ public class Task {
 
     @Column(name = "is_completed", nullable = false)
     private Boolean isCompleted;
+
+    // foreign key
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @PrePersist
     private void beforeInsert() {

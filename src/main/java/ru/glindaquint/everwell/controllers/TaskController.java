@@ -29,10 +29,8 @@ public class TaskController {
     @GetMapping("/get-owned-by-user")
     @Operation(summary = "Доступен только авторизованным пользователям")
     public ResponseEntity<?> getOwnedByUser() {
-        return ResponseEntity.ok(new GetTasksByUserResponse(taskService.getTasksByUserId(
-                        userService
-                                .getCurrentUser()
-                                .getUserId()
+        return ResponseEntity.ok(new GetTasksByUserResponse(taskService.getTasksByUser(
+                        userService.getCurrentUser()
                 ))
         );
     }
@@ -51,7 +49,7 @@ public class TaskController {
     @PostMapping("/add")
     public ResponseEntity<?> insertTask(@RequestBody @Valid InsertTaskRequest request) {
         Task task = Task.builder()
-                .ownerId(userService.getCurrentUser().getUserId())
+                .user(userService.getCurrentUser())
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .repeat(request.getRepeat())
@@ -71,7 +69,7 @@ public class TaskController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteTask(@RequestBody @Valid DeleteTaskRequest request) {
         Task task = Task.builder()
-                .ownerId(userService.getCurrentUser().getUserId())
+                .user(userService.getCurrentUser())
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .repeat(request.getRepeat())
@@ -92,7 +90,7 @@ public class TaskController {
     public ResponseEntity<?> updateTask(@RequestBody @Valid DeleteTaskRequest request) {
         Task task = Task.builder()
                 .taskId(request.getTaskId())
-                .ownerId(userService.getCurrentUser().getUserId())
+                .user(userService.getCurrentUser())
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .repeat(request.getRepeat())

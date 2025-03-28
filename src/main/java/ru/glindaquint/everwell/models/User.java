@@ -11,6 +11,7 @@ import ru.glindaquint.everwell.types.Sex;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -20,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
+    // main fields
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
@@ -39,22 +41,33 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private Date birthDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "sex", nullable = false)
+    @Column(name = "sex")
     private Sex sex;
 
-    @Column(name = "firstname", nullable = false)
+    @Column(name = "firstname")
     private String firstname;
 
-    @Column(name = "lastname", nullable = false)
+    @Column(name = "lastname")
     private String lastname;
 
     @Column(name = "patronymic")
     private String patronymic;
 
+    // foreign keys
+    @OneToMany(mappedBy = "user")
+    private Set<BloodPressure> bloodPressures;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Task> tasks;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Feed> feeds;
+
+    // UserDetails related properties
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

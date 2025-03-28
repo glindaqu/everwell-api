@@ -38,7 +38,7 @@ public class BloodPressureController {
                     .diastolicPressure(request.getDiastolicPressure())
                     .systolicPressure(request.getSystolicPressure())
                     .heartRate(request.getHeartRate())
-                    .ownerId(userService.getCurrentUser().getUserId())
+                    .user(userService.getCurrentUser())
                     .build()
             );
             return ResponseEntity.ok("Saved");

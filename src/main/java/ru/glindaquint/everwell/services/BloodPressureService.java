@@ -15,10 +15,8 @@ public class BloodPressureService {
     private final UserService userService;
 
     public List<BloodPressure> getOwnedByUser() {
-        List<BloodPressure> bloodPressures = bloodPressureRepository.getBloodPressuresByOwnerId(
-                userService
-                        .getCurrentUser()
-                        .getUserId()
+        List<BloodPressure> bloodPressures = bloodPressureRepository.getBloodPressuresByUser(
+                userService.getCurrentUser()
         );
         bloodPressures.sort(Comparator.comparing(BloodPressure::getMeasurementDateTime).reversed());
         return bloodPressures;
