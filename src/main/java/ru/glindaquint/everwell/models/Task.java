@@ -6,6 +6,14 @@ import ru.glindaquint.everwell.types.Repeat;
 
 import java.util.Date;
 
+/**
+ * Доменная модель задач. Дату создания и последнего редактирования при созданни
+ * экземпляра указывать не нужно - заполняются с помощью приватного метода с аннотацией @PrePersist.
+ * Для заполнения используется текущая дата, предоставляемя java.util.Date
+ *
+ * @see jakarta.persistence.PrePersist
+ * @see java.util.Date
+ */
 @Entity
 @Getter
 @Setter

@@ -14,13 +14,22 @@ import ru.glindaquint.everwell.exceptions.auth.BadUsernameException;
 import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.repo.UserRepository;
 
+/**
+ * Сервис для манипуляции пользователями
+ *
+ * @see UserRepository
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
 
     /**
-     * Создание пользователя
+     * Создание пользователя. Метод имеет транзакционный способ доступа к БД
+     *
+     * @param user Доменная модель пользователя, необязательные поля
+     *             могут отсутствовать
+     * @see User
      */
     @Transactional
     public void create(User user) {
@@ -40,20 +49,20 @@ public class UserService {
     }
 
     /**
-     * Получение пользователя по имени пользователя
+     * Получение пользователя по имени
      *
-     * @return пользователь
+     * @return Пользователь
+     * @see User
+     * @throws UsernameNotFoundException Если пользователь по имени не найден
      */
     @Transactional(readOnly = true)
-    public User getByUsername(String username) {
+    public User getByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
     /**
-     * Получение пользователя по имени пользователя
-     * <p>
-     * Нужен для Spring Security
+     * Получение пользователя по имени пользователя, нужен для Spring Security
      *
      * @return пользователь
      */
@@ -80,5 +89,9 @@ public class UserService {
         user.get().setPassword(password);
 
         return true;
+    }
+
+    public void updateProfile() {
+
     }
 }
