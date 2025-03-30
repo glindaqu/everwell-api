@@ -87,11 +87,12 @@ public class UserService {
             return false;
         }
         user.get().setPassword(password);
+        repository.save(user.get());
 
         return true;
     }
 
-    public void updateProfile() {
-
+    public void save(User user) {
+        repository.save(user);
     }
 }
