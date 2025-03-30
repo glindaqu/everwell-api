@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import ru.glindaquint.everwell.models.BadHabit;
+
+import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,4 +22,9 @@ public class GetUserResponse {
     private String firstname;
     private String patronymic;
     private String sex;
+    private String diseases;
+    private Date birthDate;
+    private Integer weight;
+    private Integer height;
+    private Set<String> badHabits;
 }

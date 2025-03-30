@@ -42,6 +42,12 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "height")
+    private Integer height;
+
+    @Column(name = "weight")
+    private Integer weight;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -62,6 +68,9 @@ public class User implements UserDetails {
     @Column(name = "patronymic")
     private String patronymic;
 
+    @Column(name = "diseases")
+    private String diseases;
+
     // foreign keys
     @OneToMany(mappedBy = "user")
     private Set<BloodPressure> bloodPressures;
@@ -71,6 +80,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<Feed> feeds;
+
+    @OneToMany(mappedBy = "user")
+    private Set<BadHabit> badHabits;
 
     // UserDetails related properties
     @Override
