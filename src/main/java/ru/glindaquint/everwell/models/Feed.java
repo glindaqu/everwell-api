@@ -19,6 +19,7 @@ public class Feed {
     @Id
     @Column(name = "feed_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feed_id_seq")
+    @SequenceGenerator(name = "feed_id_seq", sequenceName = "feed_id_seq", allocationSize = 1)
     private Long feedId;
 
     @Column
