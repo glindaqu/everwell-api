@@ -2,6 +2,7 @@ package ru.glindaquint.everwell.controllers;
 
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/email")
 public class EmailController {
     @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
     @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
@@ -34,8 +36,7 @@ public class EmailController {
         return Bucket.builder()
                 .addLimit(limit ->
                         limit.capacity(1).refillGreedy(1, Duration.ofMinutes(3))
-                )
-                .build();
+                ).build();
     }
 
     @GetMapping("/send-email")
