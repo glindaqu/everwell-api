@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProfileRequest {
+public class UpdateUserRequest {
     private String lastname;
     private String firstname;
     private String patronymic;

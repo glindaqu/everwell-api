@@ -4,15 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.glindaquint.everwell.dto.auth.RestoreRequest;
+import ru.glindaquint.everwell.dto.users.UpdateUserRequest;
 import ru.glindaquint.everwell.exceptions.auth.BadEmailException;
 import ru.glindaquint.everwell.exceptions.auth.BadPasswordException;
 import ru.glindaquint.everwell.exceptions.auth.BadUsernameException;
+import ru.glindaquint.everwell.models.BadHabit;
 import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.repo.UserRepository;
+import ru.glindaquint.everwell.types.Sex;
+
+import java.util.stream.Collectors;
 
 /**
  * Сервис для манипуляции пользователями
@@ -23,6 +26,7 @@ import ru.glindaquint.everwell.repo.UserRepository;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
+    private final BadHabitService badHabitService;
 
     /**
      * Создание пользователя. Метод имеет транзакционный способ доступа к БД
@@ -94,5 +98,44 @@ public class UserService {
 
     public void save(User user) {
         repository.save(user);
+    }
+
+    public void updateUser(UpdateUserRequest request) {
+        User user = getCurrentUser();
+
+        user.setLastname(request.getLastname());
+        user.setFirstname(request.getFirstname());
+        user.setPatronymic(request.getPatronymic());
+        user.setHeight(request.getHeight());
+        user.setWeight(request.getWeight());
+        user.setBirthDate(request.getBirthDate());
+        user.setSex(Sex.valueOf(request.getSex()));
+        user.setDiseases(request.getDiseases());
+
+        // removing unchecked habits
+        for (BadHabit habit : user.getBadHabits()) {
+            if (!request.getBadHabits().contains(habit.getTitle())) {
+                badHabitService.delete(habit);
+            }
+        }
+
+        // saving new habits
+        for (String habit : request.getBadHabits()) {
+            if (!user.getBadHabits()
+                    .stream()
+                    .map(BadHabit::getTitle)
+                    .collect(Collectors.toSet())
+                    .contains(habit)
+            ) {
+                badHabitService.save(
+                        BadHabit.builder()
+                                .title(habit)
+                                .user(user)
+                                .build()
+                );
+            }
+        }
+
+        save(user);
     }
 }
