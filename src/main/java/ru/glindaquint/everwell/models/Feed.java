@@ -22,15 +22,12 @@ public class Feed {
     @SequenceGenerator(name = "feed_id_seq", sequenceName = "feed_id_seq", allocationSize = 1)
     private Long feedId;
 
-    @Column
+    @Column(name = "feed_date")
     private Date feedDate;
 
-    @Column
+    @Column(name = "feed_type")
     @Enumerated(value = EnumType.STRING)
     private FeedType feedType;
-
-    @Column
-    private Integer calories;
 
     @OneToMany
     private Set<Product> products;

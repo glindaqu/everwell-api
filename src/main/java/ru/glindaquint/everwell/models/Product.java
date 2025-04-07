@@ -19,14 +19,23 @@ public class Product {
     @SequenceGenerator(name = "product_id_seq", sequenceName = "product_id_seq", allocationSize = 1)
     private Long productId;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @Column
+    @Column(name = "calories")
     private Integer calories;
 
-    @Column
+    @Column(name = "weight_in_grams")
     private Integer weightInGrams;
+
+    @Column(name = "protein")
+    private Float protein;
+
+    @Column(name = "fat")
+    private Float fat;
+
+    @Column(name = "carbohydrates")
+    private Float carbohydrates;
 
     @OneToMany(mappedBy = "products")
     private Set<Feed> feeds;
