@@ -1,6 +1,5 @@
 package ru.glindaquint.everwell.dto.tasks;
 
-import jakarta.persistence.*;
 import lombok.*;
 import ru.glindaquint.everwell.types.Repeat;
 

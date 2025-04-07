@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import ru.glindaquint.everwell.models.BadHabit;
 
 import java.util.Date;
 import java.util.Set;
