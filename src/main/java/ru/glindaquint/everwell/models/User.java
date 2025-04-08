@@ -84,6 +84,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<BadHabit> badHabits;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Product> addedProducts;
+
     // UserDetails related properties
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

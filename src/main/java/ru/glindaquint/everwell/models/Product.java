@@ -1,5 +1,6 @@
 package ru.glindaquint.everwell.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,12 @@ public class Product {
     @Column(name = "carbohydrates")
     private Float carbohydrates;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "products")
     private Set<Feed> feeds;
 }
