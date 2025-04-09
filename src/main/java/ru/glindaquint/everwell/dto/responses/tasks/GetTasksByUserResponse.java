@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.tasks;
+package ru.glindaquint.everwell.dto.responses.tasks;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

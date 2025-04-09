@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.glindaquint.everwell.dto.auth.JwtAuthenticationResponse;
-import ru.glindaquint.everwell.dto.auth.RestoreRequest;
-import ru.glindaquint.everwell.dto.auth.SignInRequest;
-import ru.glindaquint.everwell.dto.auth.SignUpRequest;
+import ru.glindaquint.everwell.dto.requests.auth.RestoreRequest;
+import ru.glindaquint.everwell.dto.requests.auth.SignInRequest;
+import ru.glindaquint.everwell.dto.requests.auth.SignUpRequest;
+import ru.glindaquint.everwell.dto.responses.auth.JwtAuthenticationResponse;
 import ru.glindaquint.everwell.services.AuthenticationService;
 
 @RestController

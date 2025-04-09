@@ -2,7 +2,7 @@ package ru.glindaquint.everwell.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.glindaquint.everwell.dto.products.InsertProductRequest;
+import ru.glindaquint.everwell.dto.requests.products.InsertProductRequest;
 import ru.glindaquint.everwell.models.Product;
 import ru.glindaquint.everwell.repo.ProductRepository;
 

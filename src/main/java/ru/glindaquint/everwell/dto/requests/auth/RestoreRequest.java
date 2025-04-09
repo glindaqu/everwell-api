@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.auth;
+package ru.glindaquint.everwell.dto.requests.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

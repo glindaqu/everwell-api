@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.bloodPressure;
+package ru.glindaquint.everwell.dto.responses.bloodPressure;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

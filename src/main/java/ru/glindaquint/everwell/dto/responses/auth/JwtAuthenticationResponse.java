@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.auth;
+package ru.glindaquint.everwell.dto.responses.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

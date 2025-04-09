@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.glindaquint.everwell.dto.users.UpdateUserRequest;
+import ru.glindaquint.everwell.dto.requests.users.UpdateUserRequest;
 import ru.glindaquint.everwell.exceptions.auth.BadEmailException;
 import ru.glindaquint.everwell.exceptions.auth.BadPasswordException;
 import ru.glindaquint.everwell.exceptions.auth.BadUsernameException;

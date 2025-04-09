@@ -1,18 +1,17 @@
-package ru.glindaquint.everwell.dto.bloodPressure;
+package ru.glindaquint.everwell.dto.responses.tasks;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.glindaquint.everwell.models.Task;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema
-public class InsertBloodPressureRequest {
-    private Integer systolicPressure;
-    private Integer diastolicPressure;
-    private Integer heartRate;
+public class GetTaskByIdResponse {
+    private Task task;
 }

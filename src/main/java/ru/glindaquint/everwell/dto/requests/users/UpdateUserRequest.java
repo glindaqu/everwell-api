@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.users;
+package ru.glindaquint.everwell.dto.requests.users;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

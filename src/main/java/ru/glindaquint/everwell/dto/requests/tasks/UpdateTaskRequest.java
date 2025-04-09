@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.tasks;
+package ru.glindaquint.everwell.dto.requests.tasks;
 
 import lombok.*;
 import ru.glindaquint.everwell.types.Repeat;

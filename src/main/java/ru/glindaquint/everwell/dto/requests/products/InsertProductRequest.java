@@ -1,4 +1,4 @@
-package ru.glindaquint.everwell.dto.products;
+package ru.glindaquint.everwell.dto.requests.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
