@@ -2,26 +2,54 @@ package ru.glindaquint.everwell.dto.requests.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO запроса для аутентификации пользователя в системе.
+ * Содержит учетные данные пользователя для входа.
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Запрос на аутентификацию")
+@Schema(description = "Запрос на аутентификацию пользователя")
 public class SignInRequest {
 
-    @Schema(description = "Имя пользователя", example = "Jon")
-    @Size(min = 5, max = 50, message = "Имя пользователя должно содержать от 5 до 50 символов")
-    @NotBlank(message = "Имя пользователя не может быть пустыми")
+    /**
+     * Уникальный идентификатор пользователя (логин или email)
+     */
+    @Schema(
+            description = "Уникальный идентификатор пользователя (логин или email)",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "user@example.com",
+            minLength = 5,
+            maxLength = 50
+    )
+    @Size(min = 5, max = 50, message = "Длина идентификатора должна быть от 5 до 50 символов")
+    @NotBlank(message = "Идентификатор пользователя не может быть пустым")
+    @Pattern(regexp = "^[a-zA-Z0-9_@.-]+$", message = "Допустимы только буквы, цифры и символы _@.-")
     private String username;
 
-    @Schema(description = "Пароль", example = "my_1secret1_password")
-    @Size(min = 5, max = 255, message = "Длина пароля должна быть от 8 до 255 символов")
-    @NotBlank(message = "Пароль не может быть пустыми")
+    /**
+     * Секретный пароль пользователя
+     */
+    @Schema(
+            description = "Пароль пользователя",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "My$ecretP@ssw0rd",
+            minLength = 8,
+            maxLength = 255
+    )
+    @Size(min = 8, max = 255, message = "Длина пароля должна быть от 8 до 255 символов")
+    @NotBlank(message = "Пароль не может быть пустым")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Пароль должен содержать минимум 1 заглавную букву, 1 цифру и 1 спецсимвол"
+    )
     private String password;
 }
