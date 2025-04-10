@@ -6,7 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.glindaquint.everwell.dto.responses.DataResponse;
+import ru.glindaquint.everwell.models.Product;
 import ru.glindaquint.everwell.services.ProductService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -16,7 +20,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("get-all")
-    public ResponseEntity<?> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<DataResponse<List<Product>>> getAllProducts() {
+        DataResponse<List<Product>> response = DataResponse.<List<Product>>builder()
+                .data(productService.getAllProducts())
+                .build();
+        return ResponseEntity.ok(response);
     }
 }
