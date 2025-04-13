@@ -1,10 +1,12 @@
 package ru.glindaquint.everwell.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.glindaquint.everwell.types.FeedType;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -29,10 +31,23 @@ public class Feed {
     @Enumerated(value = EnumType.STRING)
     private FeedType feedType;
 
-    @OneToMany
-    private Set<Product> products;
+    @JsonIgnore
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<FeedProduct> feedProducts = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @PrePersist
+    private void setDatetime() {
+        setFeedDate(new Date());
+    }
+
+    public void addFeedProduct(FeedProduct feedProduct) {
+        feedProducts.add(feedProduct);
+        feedProduct.setFeed(this);
+    }
 }

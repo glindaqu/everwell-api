@@ -2,7 +2,6 @@ package ru.glindaquint.everwell.dto.responses;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.springframework.data.jpa.repository.query.Meta;
 
 /**
  * Универсальный контейнер для всех успешных ответов API.
@@ -47,7 +46,7 @@ public class DataResponse<T> {
     @Schema(
             description = "Информация об ошибках (если запрос выполнен частично)",
             nullable = true,
-            example = "{\"code\": \"PARTIAL_SUCCESS\", \"message\": \"Не все данные были обработаны\"}"
+            example = "Не все данные были обработаны"
     )
-    private Error error;
+    private String error;
 }

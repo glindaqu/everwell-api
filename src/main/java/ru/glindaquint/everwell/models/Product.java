@@ -44,6 +44,6 @@ public class Product {
     private User owner;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "products")
-    private Set<Feed> feeds;
+    @OneToMany(mappedBy = "product")
+    private Set<FeedProduct> feedProducts;
 }

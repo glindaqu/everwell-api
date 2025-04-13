@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-
 @Configuration
 class EmailConfiguration {
     @Value("${spring.mail.host}")
@@ -35,5 +34,4 @@ class EmailConfiguration {
         properties.setProperty("mail.transport.protocol", protocol);
         return mailSender;
     }
-
 }

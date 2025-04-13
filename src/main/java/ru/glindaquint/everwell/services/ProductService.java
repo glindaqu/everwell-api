@@ -23,17 +23,15 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void insertProduct(InsertProductRequest request) {
-        productRepository.save(
-                 Product.builder()
-                         .title(request.getTitle())
-                         .calories(request.getCalories())
-                         .weightInGrams(request.getWeightInGrams())
-                         .fat(request.getFat())
-                         .protein(request.getProtein())
-                         .carbohydrates(request.getCarbohydrates())
-                         .owner(userService.getCurrentUser())
-                         .build()
-        );
+    public Product insertProduct(InsertProductRequest request) {
+        return productRepository.save(Product.builder()
+                                             .title(request.getTitle())
+                                             .calories(request.getCalories())
+                                             .weightInGrams(request.getWeightInGrams())
+                                             .fat(request.getFat())
+                                             .protein(request.getProtein())
+                                             .carbohydrates(request.getCarbohydrates())
+                                             .owner(userService.getCurrentUser())
+                                             .build());
     }
 }

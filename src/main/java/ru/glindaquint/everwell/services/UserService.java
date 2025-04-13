@@ -15,10 +15,8 @@ import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.repo.UserRepository;
 import ru.glindaquint.everwell.types.Sex;
 
-import java.util.stream.Collectors;
-
 /**
- * Сервис для манипуляции пользователями
+ * Сервис для манипуляции пользователями.
  *
  * @see UserRepository
  */
@@ -26,13 +24,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
-    private final BadHabitService badHabitService;
 
     /**
      * Создание пользователя. Метод имеет транзакционный способ доступа к БД
      *
-     * @param user Доменная модель пользователя, необязательные поля
-     *             могут отсутствовать
+     * @param user Доменная модель пользователя, необязательные поля могут отсутствовать
      * @see User
      */
     @Transactional
@@ -45,7 +41,8 @@ public class UserService {
             throw new BadEmailException();
         }
 
-        if (user.getPassword().length() < 5) {
+        if (user.getPassword()
+                .length() < 5) {
             throw new BadPasswordException();
         }
 
@@ -53,20 +50,21 @@ public class UserService {
     }
 
     /**
-     * Получение пользователя по имени
+     * Получение пользователя по имени.
      *
      * @return Пользователь
-     * @see User
      * @throws UsernameNotFoundException Если пользователь по имени не найден
+     * @see User
      */
     @Transactional(readOnly = true)
     public User getByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username)
+        return repository
+                .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
     /**
-     * Получение пользователя по имени пользователя, нужен для Spring Security
+     * Получение пользователя по имени пользователя, нужен для Spring Security.
      *
      * @return пользователь
      */
@@ -75,13 +73,15 @@ public class UserService {
     }
 
     /**
-     * Получение текущего пользователя
+     * Получение текущего пользователя.
      *
      * @return текущий пользователь
      */
     public User getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var username = SecurityContextHolder.getContext()
+                                            .getAuthentication()
+                                            .getName();
         return getByUsername(username);
     }
 
@@ -90,7 +90,8 @@ public class UserService {
         if (user.isEmpty()) {
             return false;
         }
-        user.get().setPassword(password);
+        user.get()
+            .setPassword(password);
         repository.save(user.get());
 
         return true;
@@ -100,6 +101,7 @@ public class UserService {
         repository.save(user);
     }
 
+    @Transactional
     public void updateUser(UpdateUserRequest request) {
         User user = getCurrentUser();
 
@@ -113,28 +115,26 @@ public class UserService {
         user.setDiseases(request.getDiseases());
 
         // removing unchecked habits
-        for (BadHabit habit : user.getBadHabits()) {
-            if (!request.getBadHabits().contains(habit.getTitle())) {
-                badHabitService.delete(habit);
-            }
-        }
+        user.getBadHabits()
+            .removeIf(habit -> !request.getBadHabits()
+                                       .contains(habit.getTitle()));
 
         // saving new habits
-        for (String habit : request.getBadHabits()) {
-            if (!user.getBadHabits()
-                    .stream()
-                    .map(BadHabit::getTitle)
-                    .collect(Collectors.toSet())
-                    .contains(habit)
-            ) {
-                badHabitService.save(
-                        BadHabit.builder()
-                                .title(habit)
-                                .user(user)
-                                .build()
-                );
-            }
-        }
+        request
+                .getBadHabits()
+                .forEach(
+                        habit -> {
+                            if (user.getBadHabits()
+                                    .stream()
+                                    .noneMatch(badHabit -> badHabit.getTitle()
+                                                                   .equals(habit))) {
+                                user.getBadHabits()
+                                    .add(BadHabit.builder()
+                                                 .title(habit)
+                                                 .user(user)
+                                                 .build());
+                            }
+                        });
 
         save(user);
     }
