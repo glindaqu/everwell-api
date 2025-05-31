@@ -14,8 +14,8 @@ import ru.glindaquint.everwell.models.User;
 import ru.glindaquint.everwell.repo.FeedRepository;
 import ru.glindaquint.everwell.repo.ProductRepository;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,29 +43,58 @@ public class FeedService {
         Feed savedFeed = feedRepository.save(feed);
 
         // Обрабатываем продукты
-        request.getProductsIds()
-               .forEach(productId -> {
-                   Product product = productRepository.findById(productId)
-                                                      .orElseThrow(() -> new EntityNotFoundException(
-                                                              "Product not found: " + productId));
+        request.getProducts()
+               .forEach(feedProduct -> {
+                   Product product = productRepository.findById(feedProduct.getProduct()
+                                                                           .getProductId())
+                                                      .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-                   FeedProduct feedProduct = FeedProduct.builder()
-                                                        .feed(savedFeed)
-                                                        .product(product)
-                                                        .quantity(request.getQuantity())
-                                                        .portionSize(request.getPortionSize())
-                                                        .build();
+                   FeedProduct createdFeedProduct = FeedProduct.builder()
+                                                               .feed(savedFeed)
+                                                               .product(product)
+                                                               .quantity(feedProduct.getQuantity())
+                                                               .weightInGrams(feedProduct.getWeightInGrams())
+                                                               .protein(feedProduct.getProtein())
+                                                               .fat(feedProduct.getFat())
+                                                               .calories(feedProduct.getCalories())
+                                                               .carbohydrates(feedProduct.getCarbohydrates())
+                                                               .build();
 
-                   savedFeed.addFeedProduct(feedProduct);
+                   savedFeed.addFeedProduct(createdFeedProduct);
                });
     }
 
     @Transactional(readOnly = true)
-    public Set<Product> getFeedProducts(@Valid Long feedId) {
+    public Set<FeedProduct> getFeedProducts(@Valid Long feedId) {
         var feed = feedRepository.findById(feedId);
-        var products = new HashSet<Product>();
-        feed.ifPresent(value -> value.getFeedProducts()
-                                     .forEach(product -> products.add(product.getProduct())));
-        return products;
+        if (feed.isPresent()) {
+            return feed.get()
+                       .getFeedProducts();
+        }
+        return Collections.emptySet();
+    }
+
+    @Transactional
+    public List<Product> getRecentProductsByUser(@Valid User user) {
+        List<Product> products = new ArrayList<>();
+        feedRepository.findAll()
+                      .stream()
+                      .filter(feed -> feed.getUser()
+                                          .equals(user))
+                      .forEach(feed -> {
+                          feed.getFeedProducts()
+                              .forEach(product -> products.add(product.getProduct()));
+                      });
+        return products.subList(0, Math.min(products.size(), 10));
+    }
+
+    public Set<Feed> getUsersFeeds(User currentUser) {
+        return feedRepository.findAll()
+                             .stream()
+                             .filter(feed -> Objects.equals(
+                                     feed.getUser()
+                                         .getUserId(), currentUser.getUserId()
+                             ))
+                             .collect(Collectors.toSet());
     }
 }

@@ -31,7 +31,6 @@ public class Feed {
     @Enumerated(value = EnumType.STRING)
     private FeedType feedType;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<FeedProduct> feedProducts = new HashSet<>();

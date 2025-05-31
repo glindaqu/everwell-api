@@ -7,7 +7,9 @@ import ru.glindaquint.everwell.models.Product;
 import ru.glindaquint.everwell.repo.ProductRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +35,17 @@ public class ProductService {
                                              .carbohydrates(request.getCarbohydrates())
                                              .owner(userService.getCurrentUser())
                                              .build());
+    }
+
+    public List<Product> getUsersProducts() {
+        return productRepository.findAll()
+                                .stream()
+                                .filter(product -> Objects.equals(
+                                        product.getOwner()
+                                               .getUserId(),
+                                        userService.getCurrentUser()
+                                                   .getUserId()
+                                ))
+                                .collect(Collectors.toList());
     }
 }

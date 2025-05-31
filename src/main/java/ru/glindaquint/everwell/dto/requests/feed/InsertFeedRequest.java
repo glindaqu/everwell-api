@@ -1,6 +1,7 @@
 package ru.glindaquint.everwell.dto.requests.feed;
 
 import lombok.*;
+import ru.glindaquint.everwell.models.FeedProduct;
 import ru.glindaquint.everwell.types.FeedType;
 
 import java.util.Set;
@@ -13,7 +14,5 @@ import java.util.Set;
 @AllArgsConstructor
 public class InsertFeedRequest {
     private FeedType feedType;
-    private Set<Long> productsIds;
-    private Integer quantity;
-    private Integer portionSize;
+    private Set<FeedProduct> products;
 }

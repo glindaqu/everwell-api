@@ -58,9 +58,8 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public User getByUsername(String username) throws UsernameNotFoundException {
-        return repository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+        return repository.findByUsername(username)
+                         .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
     /**
@@ -120,21 +119,19 @@ public class UserService {
                                        .contains(habit.getTitle()));
 
         // saving new habits
-        request
-                .getBadHabits()
-                .forEach(
-                        habit -> {
-                            if (user.getBadHabits()
-                                    .stream()
-                                    .noneMatch(badHabit -> badHabit.getTitle()
-                                                                   .equals(habit))) {
-                                user.getBadHabits()
-                                    .add(BadHabit.builder()
-                                                 .title(habit)
-                                                 .user(user)
-                                                 .build());
-                            }
-                        });
+        request.getBadHabits()
+               .forEach(habit -> {
+                   if (user.getBadHabits()
+                           .stream()
+                           .noneMatch(badHabit -> badHabit.getTitle()
+                                                          .equals(habit))) {
+                       user.getBadHabits()
+                           .add(BadHabit.builder()
+                                        .title(habit)
+                                        .user(user)
+                                        .build());
+                   }
+               });
 
         save(user);
     }

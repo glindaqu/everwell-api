@@ -1,5 +1,6 @@
 package ru.glindaquint.everwell.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class FeedProduct {
     @SequenceGenerator(name = "feed_product_id_seq", sequenceName = "feed_product_id_seq", allocationSize = 1)
     private Long feed_product_id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "feed_id")
     private Feed feed;
@@ -26,5 +28,9 @@ public class FeedProduct {
     private Product product;
 
     private Integer quantity;
-    private Integer portionSize;
+    private Integer weightInGrams;
+    private Float protein;
+    private Float carbohydrates;
+    private Float fat;
+    private Integer calories;
 }
