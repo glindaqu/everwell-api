@@ -70,6 +70,9 @@ public class User implements UserDetails {
   @Column(name = "diseases")
   private String diseases;
 
+  @Column(name = "image")
+  private String image;
+
   // foreign keys
   @OneToMany(mappedBy = "user")
   private Set<BloodPressure> bloodPressures;

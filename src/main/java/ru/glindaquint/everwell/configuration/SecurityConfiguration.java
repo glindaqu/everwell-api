@@ -1,5 +1,8 @@
 package ru.glindaquint.everwell.configuration;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import ru.glindaquint.everwell.filters.JwtAuthenticationFilter;
 import ru.glindaquint.everwell.services.UserService;
-
-import java.util.List;
-
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -55,6 +54,8 @@ public class SecurityConfiguration {
                     .requestMatchers("/auth/**")
                     .permitAll()
                     .requestMatchers("/email/**")
+                    .permitAll()
+                    .requestMatchers("/images/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**")
                     .permitAll()
