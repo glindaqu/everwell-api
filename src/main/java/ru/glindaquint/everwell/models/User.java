@@ -89,6 +89,10 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "owner")
   private Set<Product> addedProducts;
 
+  @ManyToOne
+  @JoinColumn(name = "family_group_id")
+  private FamilyGroup familyGroup;
+
   // UserDetails related properties
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

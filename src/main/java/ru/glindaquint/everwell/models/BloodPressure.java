@@ -1,9 +1,9 @@
 package ru.glindaquint.everwell.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.Date;
+import lombok.*;
 
 @Entity
 @Getter
@@ -31,6 +31,7 @@ public class BloodPressure {
     @Column(name = "measurement_datetime", nullable = false)
     private Date measurementDateTime;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
